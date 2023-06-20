@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ダミー画像作成ツール</title>
+    <link rel="stylesheet" href="css/destyle.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <main class="main">
+        <div class="title_wrap">
+            <h1 class="title">ダミー画像作成ツール</h1>
+        </div>
+        <div class="canvas_wrap">
+            <canvas id="canvas" class="canvas" width="500" height="500"></canvas>
+            <canvas id="canvas_img" class="canvas" width="500" height="500"></canvas>
+            <canvas id="canvas_back" class="canvas" width="500" height="500"></canvas>
+        </div>
+        <div id="result"></div>
+    </main>
+
+    <aside class="control">
+        <label for="c_width">
+            キャンバスの幅(10～800)：<br>
+            <input id="c_width" type="number" name="c_width" min="10" max="800" step="10">
+        </label>
+        <label for="c_height">
+            キャンバスの高さ(10～800)：<br>
+            <input id="c_height" type="number" name="c_width" min="10" max="800" step="10">
+        </label>
+        <label for="c_bgcolor">
+            キャンバスの背景色：<br>
+            <input id="c_bgcolor" type="color" name="c_bgcolor">
+        </label>
+        <label for="c_bgopacity">
+            キャンバスの背景色(透明度)(0～1)：<br>
+            <input id="c_bgopacity" type="number" name="c_bgopacity" min="0" max="1" step="0.1">
+        </label>
+
+        <label for="f_size">
+            フォントサイズ(12～50)：<br>
+            <input id="f_size" type="number" name="f_size" min="12" max="50">
+        </label>
+        <label for="f_color">
+            フォントカラー：<br>
+            <input id="f_color" type="color" name="f_color">
+        </label>
+        <label for="f_opacity">
+            フォントカラー(透明度)(0～1)：<br>
+            <input id="f_opacity" type="number" name="f_opacity" min="0" max="1" step="0.1">
+        </label>
+        <label for="text">
+            テキスト内容：<br>
+            <input id="text" type="text" name="text">
+        </label>
+
+        <label for="l_bold">
+            線の太さ(1～50)：<br>
+            <input id="l_bold" type="number" name="l_bold" min="1" max="50" step="1">
+        </label>
+        <label for="l_color">
+            線の色：<br>
+            <input id="l_color" type="color" name="l_color">
+        </label>
+        <label for="l_opacity">
+            線の色(透明度)(0～1)：<br>
+            <input id="l_opacity" type="number" name="l_opacity" min="0" max="1" step="0.1">
+        </label>
+
+        <label for="base_img">
+            画像を指定：<br>
+            <span>※画像はキャンバスのサイズに自動調整されます。</span><br>
+            <input id="base_img" type="file" name="base_img" accept=".jpg, .jpeg, .gif, .png, .webp">
+        </label>
+        <button id="sizebyimg_btn">キャンバスをイメージサイズに合わせる</button>
+
+        <div>
+            保存形式：<br>
+            <label for="jpeg">
+                <input type="radio" id="jpeg" name="extension" value="jpeg" checked>
+                jpeg
+            </label>
+            <label for="png">
+                <input type="radio" id="png" name="extension" value="png">
+                png
+            </label>
+            <label for="webp">
+                <input type="radio" id="webp" name="extension" value="webp">
+                webp
+            </label>
+        </div>
+        <label for="quality">
+            画像品質：<br>
+            <input id="quality" type="number" min="0" max="100" step="1" value="90">
+        </label>
+        <button id="download_img">ダウンロード</button>
+        <button id="clear_all">全てクリア</button>
+        <button id="clear_line">描画クリア</button>
+        <button id="clear_img">画像クリア</button>
+        <button id="clear_back">背景色クリア</button>
+    </aside>
+    <script src="js/main.js"></script>
+</body>
+</html>
