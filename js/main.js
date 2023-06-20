@@ -6,7 +6,7 @@
     const canvas_img = document.getElementById('canvas_img');           // 背景画像用キャンバス
     const canvas_back = document.getElementById('canvas_back');         // 背景色用キャンバス
     const ctx_line = canvas_line.getContext('2d', { willReadFrequently: true });
-    const ctx_font = canvas_font.getContext('2d');
+    const ctx_font = canvas_font.getContext('2d', { willReadFrequently: true });
     const ctx_img = canvas_img.getContext('2d');
     const ctx_back = canvas_back.getContext('2d');
     let canvas_arr = [canvas_line, canvas_font, canvas_img, canvas_back];      // キャンバスを入れた配列
@@ -20,6 +20,8 @@
     const clear_back = document.getElementById('clear_back');
     const clear_all = document.getElementById('clear_all');
     let clear_arr = [clear_line, clear_font, clear_img, clear_back, clear_all];     // クリアボタンを入れた配列
+    // ラインのモード ラジオボタン
+    const drawmodes = document.getElementsByName('drawmode');
 
     // キャンバスのデフォルト値
     let canvasDefault = {
@@ -37,6 +39,8 @@
         color: "#ff0000",           // 線の色
         opacity: 1.0,               // 線の色(透明度)
     }
+    // 描画モードのデフォルト値
+    let l_mode = "normal";          // 描画モード or 消しゴムモード
     // フォントのデフォルト値
     let fontDefault = {
         style_l: false,             // フォントスタイル(中抜きかどうか)
@@ -79,7 +83,6 @@
         f_text: document.getElementById('text'),            // 文章の要素
         base_img: document.getElementById('base_img'),      // 画像を取得
     }
-    // ・・・フィルターのような機能も後で作ってみる
 
 
     // キャンバスのサイズをセット
@@ -102,8 +105,20 @@
     changeCanvasColor('bgcolor');
     changeCanvasColor('bgopacity');
 
+    // デフォルトのラインモードに設定
+    setLineDefaultMode();
 
 
+    // ラインのモードを切り替える関数
+    function changeLineMode() {
+        let result;
+        drawmodes.forEach(radio_btn => {
+            if (radio_btn.checked) {
+                result = radio_btn.dataset.mode;
+            }
+        });
+        return result;
+    }
 
     // キャンバス上でのイベント
     canvas_line.addEventListener('mousedown', e => {
@@ -124,6 +139,7 @@
     function draw(x, y) {
         let rgba = hex2rgb(inputObj["l_color"].value);
         rgba.push(inputObj["l_opacity"].value);
+        ctx_line.globalCompositeOperation = changeLineMode();
         ctx_line.lineWidth = inputObj["l_bold"].value;
         ctx_line.strokeStyle = 'rgba(' + rgba + ')';
         if (click_flag == "1") {
@@ -262,14 +278,14 @@
     }
 
     // 描画canvasを取得しておく関数
-    function getLine() {
-        let data = ctx_line.getImageData(0, 0, inputObj["c_width"].value, inputObj["c_height"].value);
+    function getImage(ctx) {
+        let data = ctx.getImageData(0, 0, inputObj["c_width"].value, inputObj["c_height"].value);
         return data;
     }
 
     // 保存しておいた描画canvasを貼り付ける関数
-    function putLine(data) {
-        ctx_line.putImageData(data, 0, 0);
+    function putImage(ctx, data) {
+        ctx.putImageData(data, 0, 0);
     }
 
     // sizebyimg_btnを押したら、キャンバスサイズを画像サイズに変更。max800
@@ -277,7 +293,8 @@
     sizebyimg_btn.addEventListener('click', () => {
         if (inputObj["base_img"].files[0]) {
             // 描画canvasを取得しておく
-            let line = getLine();
+            let line = getImage(ctx_line);
+            let font = getImage(ctx_font);
             // 変更前のサイズ
             let w1 = img3.width;
             let h1 = img3.height;
@@ -299,8 +316,9 @@
                 canvas["height"] = inputObj["c_height"].value;
             });
             setCanvasImg();
-            // 保存しておいた描画canvasを貼り付ける
-            putLine(line);
+            // 保存しておいたcanvasを貼り付ける
+            putImage(ctx_line, line);
+            putImage(ctx_font, font);
         }
     });
 
@@ -383,11 +401,15 @@
     // キャンバスのサイズを変更する関数
     function changeCanvasSize(attr) {
         inputObj["c_" + attr].addEventListener('change', e => {
-            let line = getLine();
+            let line = getImage(ctx_line);
+            let font = getImage(ctx_font);
             canvas_arr.forEach(canvas => {
                 canvas[attr] = e.target.value;
                 if (canvas.id === 'canvas_line') {
-                    putLine(line);
+                    putImage(ctx_line, line);
+                }
+                if (canvas.id === 'canvas_font') {
+                    putImage(ctx_font, font);
                 }
                 if (canvas.id === 'canvas_back') {
                     setBgcolor();
@@ -422,6 +444,8 @@
         });
     }
 
+    //
+
     // フォントのスタイルを初期値にセットする関数
     function setFontStyleDefault() {
         if (fontDefault["style_i"]){
@@ -455,6 +479,18 @@
     }
 
 
+
+    // ラインのモードをデフォルトに戻す関数
+    function setLineDefaultMode() {
+        drawmodes.forEach(el => {
+            if (el.value === l_mode) {
+                el.checked = true;
+            } else {
+                el.checked = false;
+            }
+        });
+    }
+
     // クリアボタン(各種)   fontのクリアボタンがまだ★★★
     clear_arr.forEach((clear, index) => {
         clear.addEventListener('click', () => {
@@ -463,6 +499,7 @@
                 setDefaultSize();
                 setStrokeDefault();
                 setFontStyleDefault();
+                setLineDefaultMode();
                 setInputValue(canvasDefault, 'c_');
                 setInputValue(backDefault, 'c_');
                 setInputValue(lineDefault, 'l_');
@@ -472,6 +509,7 @@
                 clearCanvas(ctx_arr[index]);
                 switch(clear.id){
                     case 'clear_line':
+                        setLineDefaultMode();
                         setInputValue(lineDefault, 'l_');
                         break;
                     case 'clear_font':
