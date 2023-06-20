@@ -13,7 +13,8 @@
             <h1 class="title">ダミー画像作成ツール</h1>
         </div>
         <div class="canvas_wrap">
-            <canvas id="canvas" class="canvas" width="500" height="500"></canvas>
+            <canvas id="canvas_line" class="canvas" width="500" height="500"></canvas>
+            <canvas id="canvas_font" class="canvas" width="500" height="500"></canvas>
             <canvas id="canvas_img" class="canvas" width="500" height="500"></canvas>
             <canvas id="canvas_back" class="canvas" width="500" height="500"></canvas>
         </div>
@@ -38,22 +39,57 @@
             <input id="c_bgopacity" type="number" name="c_bgopacity" min="0" max="1" step="0.1">
         </label>
 
-        <label for="f_size">
-            フォントサイズ(12～50)：<br>
-            <input id="f_size" type="number" name="f_size" min="12" max="50">
-        </label>
-        <label for="f_color">
-            フォントカラー：<br>
-            <input id="f_color" type="color" name="f_color">
-        </label>
-        <label for="f_opacity">
-            フォントカラー(透明度)(0～1)：<br>
-            <input id="f_opacity" type="number" name="f_opacity" min="0" max="1" step="0.1">
-        </label>
-        <label for="text">
-            テキスト内容：<br>
-            <input id="text" type="text" name="text">
-        </label>
+
+
+        <div class="font_set">
+            <label for="text">
+                テキスト内容：<br>
+                <input id="text" type="text" name="text">
+            </label>
+            <label for="f_size">
+                フォントサイズ(12～100)：<br>
+                <input id="f_size" type="number" name="f_size" min="12" max="100">
+            </label>
+            <label for="f_stroke_w" class="hide">
+                中抜きの線の太さ(0~5)：<br>
+                <input id="f_stroke_w" type="number" name="f_stroke_w" min="0" max="5" step="0.2">
+            </label>
+            <label for="f_style_l">
+                中抜き：<br>
+                <input id="f_style_l" type="checkbox" name="f_style_l">
+            </label>
+            <label for="f_style_i">
+                斜体：<br>
+                <input id="f_style_i" type="checkbox" name="f_style_i" data-style="italic">
+            </label>
+            <label for="f_style_b">
+                太字：<br>
+                <input id="f_style_b" type="checkbox" name="f_style_b" data-style="bold">
+            </label>
+            <label for="f_family">
+                フォントの種類：<br>
+                <select id="f_family" name="f_family">
+                    <option value="ms_g" selected>MS ゴシック</option>
+                    <option value="ms_p">ＭＳ Ｐゴシック</option>
+                    <option value="ms_m">ＭＳ 明朝</option>
+                    <option value="yu_m">游明朝</option>
+                    <option value="yu_g">游ゴシック</option>
+                    <option value="hg_me">HG明朝E</option>
+                    <option value="hg_ge">HGゴシックE</option>
+                </select>
+            </label>
+            <label for="f_color">
+                フォントカラー：<br>
+                <input id="f_color" type="color" name="f_color">
+            </label>
+
+            <div>
+                <button id="left">←</button>
+                <button id="up">↑</button>
+                <button id="right">→</button>
+                <button id="down">↓</button>
+            </div>
+        </div>
 
         <label for="l_bold">
             線の太さ(1～50)：<br>
@@ -97,6 +133,7 @@
         <button id="download_img">ダウンロード</button>
         <button id="clear_all">全てクリア</button>
         <button id="clear_line">描画クリア</button>
+        <button id="clear_font">フォントクリア</button>
         <button id="clear_img">画像クリア</button>
         <button id="clear_back">背景色クリア</button>
     </aside>

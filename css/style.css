@@ -1,5 +1,9 @@
 @charset 'UTF-8';
 
+.hide {
+    display: none !important;
+}
+
 .title_wrap {
     margin-top: 50px;
     text-align: center;
