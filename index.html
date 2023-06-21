@@ -21,130 +21,224 @@
         <div id="result"></div>
     </main>
 
-    <aside class="control">
-        <label for="c_width">
-            キャンバスの幅(10～800)：<br>
-            <input id="c_width" type="number" name="c_width" min="10" max="800" step="10">
-        </label>
-        <label for="c_height">
-            キャンバスの高さ(10～800)：<br>
-            <input id="c_height" type="number" name="c_width" min="10" max="800" step="10">
-        </label>
-        <label for="c_bgcolor">
-            キャンバスの背景色：<br>
-            <input id="c_bgcolor" type="color" name="c_bgcolor">
-        </label>
-        <label for="c_bgopacity">
-            キャンバスの背景色(透明度)(0～1)：<br>
-            <input id="c_bgopacity" type="number" name="c_bgopacity" min="0" max="1" step="0.1">
-        </label>
+    <div id="hb_btn" class="hb_btn active">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
 
-
-
-        <div class="font_set">
-            <label for="text">
-                テキスト内容：<br>
-                <input id="text" type="text" name="text">
-            </label>
-            <label for="f_size">
-                フォントサイズ(12～100)：<br>
-                <input id="f_size" type="number" name="f_size" min="12" max="100">
-            </label>
-            <label for="f_stroke_w" class="hide">
-                中抜きの線の太さ(0~5)：<br>
-                <input id="f_stroke_w" type="number" name="f_stroke_w" min="0" max="5" step="0.2">
-            </label>
-            <label for="f_style_l">
-                中抜き：<br>
-                <input id="f_style_l" type="checkbox" name="f_style_l">
-            </label>
-            <label for="f_style_i">
-                斜体：<br>
-                <input id="f_style_i" type="checkbox" name="f_style_i" data-style="italic">
-            </label>
-            <label for="f_style_b">
-                太字：<br>
-                <input id="f_style_b" type="checkbox" name="f_style_b" data-style="bold">
-            </label>
-            <label for="f_family">
-                フォントの種類：<br>
-                <select id="f_family" name="f_family">
-                    <option value="ms_g" selected>MS ゴシック</option>
-                    <option value="ms_p">ＭＳ Ｐゴシック</option>
-                    <option value="ms_m">ＭＳ 明朝</option>
-                    <option value="yu_m">游明朝</option>
-                    <option value="yu_g">游ゴシック</option>
-                    <option value="hg_me">HG明朝E</option>
-                    <option value="hg_ge">HGゴシックE</option>
-                </select>
-            </label>
-            <label for="f_color">
-                フォントカラー：<br>
-                <input id="f_color" type="color" name="f_color">
-            </label>
-
-            <div>
-                <button id="left">←</button>
-                <button id="up">↑</button>
-                <button id="right">→</button>
-                <button id="down">↓</button>
-            </div>
+    <aside id="control" class="control active">
+        <div class="canvas_set set">
+            <table>
+                <tr>
+                    <th>
+                        <label for="c_width">幅(10-800)</label>
+                    </th>
+                    <td>
+                        <input id="c_width" type="number" name="c_width" min="10" max="800" step="10">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="c_height">高さ(10-800)</label>
+                    </th>
+                    <td>
+                        <input id="c_height" type="number" name="c_width" min="10" max="800" step="10">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="c_bgcolor">背景色</label>
+                    </th>
+                    <td>
+                        <input id="c_bgcolor" type="color" name="c_bgcolor">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="c_bgopacity">透明度(0-1)</label>
+                    </th>
+                    <td>
+                        <input id="c_bgopacity" type="number" name="c_bgopacity" min="0" max="1" step="0.1">
+                    </td>
+                </tr>
+                </table>
         </div>
 
-        <label for="drawmode_erase">
-            <input id="drawmode_erase" type="radio" name="drawmode" value="erase" data-mode="destination-out">
-            消しゴムモード
-        </label>
-        <label for="drawmode_normal">
-            <input id="drawmode_normal" type="radio" name="drawmode" value="normal" data-mode="source-over" checked>
-            描画モード
-        </label>
-        <label for="l_bold">
-            線の太さ(1～50)：<br>
-            <input id="l_bold" type="number" name="l_bold" min="1" max="50" step="1">
-        </label>
-        <label for="l_color">
-            線の色：<br>
-            <input id="l_color" type="color" name="l_color">
-        </label>
-        <label for="l_opacity">
-            線の色(透明度)(0～1)：<br>
-            <input id="l_opacity" type="number" name="l_opacity" min="0" max="1" step="0.1">
-        </label>
-
-        <label for="base_img">
-            画像を指定：<br>
-            <span>※画像はキャンバスのサイズに自動調整されます。</span><br>
-            <input id="base_img" type="file" name="base_img" accept=".jpg, .jpeg, .gif, .png, .webp">
-        </label>
-        <button id="sizebyimg_btn">キャンバスをイメージサイズに合わせる</button>
-
-        <div>
-            保存形式：<br>
-            <label for="jpeg">
-                <input type="radio" id="jpeg" name="extension" value="jpeg" checked>
-                jpeg
-            </label>
-            <label for="png">
-                <input type="radio" id="png" name="extension" value="png">
-                png
-            </label>
-            <label for="webp">
-                <input type="radio" id="webp" name="extension" value="webp">
-                webp
-            </label>
+        <div class="img_set set">
+            <label for="base_img">画像を指定</label><br>
+            <input id="base_img" type="file" name="base_img" accept=".jpg, .jpeg, .gif, .png, .webp"><br>
+            <button id="sizebyimg_btn" class="btn">画像サイズに合わせる</button>
         </div>
-        <label for="quality">
-            画像品質：<br>
-            <input id="quality" type="number" min="0" max="100" step="1" value="90">
-        </label>
-        <button id="download_img">ダウンロード</button>
-        <button id="clear_all">全てクリア</button>
-        <button id="clear_line">描画クリア</button>
-        <button id="clear_font">フォントクリア</button>
-        <button id="clear_img">画像クリア</button>
-        <button id="clear_back">背景色クリア</button>
+
+        <div class="font_set set">
+            <label for="text">テキスト</label><br>
+            <input id="text" class="mb_5" type="text" name="text">
+            <table>
+                <tr>
+                    <th>
+                        <label for="f_family">種類</label>
+                    </th>
+                    <td>
+                        <select id="f_family" name="f_family">
+                            <option value="ms_g" selected>MS ゴシック</option>
+                            <option value="ms_p">ＭＳ Ｐゴシック</option>
+                            <option value="ms_m">ＭＳ 明朝</option>
+                            <option value="yu_m">游明朝</option>
+                            <option value="yu_g">游ゴシック</option>
+                            <option value="hg_me">HG明朝E</option>
+                            <option value="hg_ge">HGゴシックE</option>
+                        </select>
+                    </td>
+                </tr>
+
+
+
+            <tr>
+                <th>
+                    <label for="f_size">サイズ(12-100)</label>
+                </th>
+                <td>
+                    <input id="f_size" type="number" name="f_size" min="12" max="100">
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    <label for="f_color">文字色</label>
+                </th>
+                <td>
+                    <input id="f_color" type="color" name="f_color">
+                </td>
+            </tr>
+
+            <tr>
+                <th><p>スタイル</p></th>
+                <td>
+                    <label for="f_style_l">
+                        <input id="f_style_l" type="checkbox" name="f_style_l">
+                        中抜き
+                    </label>
+                    <label for="f_style_i">
+                        <input id="f_style_i" type="checkbox" name="f_style_i" data-style="italic">
+                        斜体
+                    </label>
+                    <label for="f_style_b">
+                        <input id="f_style_b" type="checkbox" name="f_style_b" data-style="bold">
+                        太字
+                    </label>
+                </td>
+            </tr>
+            <tr class="hide">
+                <th>
+                    <label for="f_stroke_w">中抜き線幅(0-5)</label>
+                </th>
+                <td>
+                    <input id="f_stroke_w" type="number" name="f_stroke_w" min="0" max="5" step="0.2">
+                </td>
+            </tr>
+
+            <tr>
+                <th><p>位置</p></th>
+                <td>
+                    <div class="text_btns">
+                        <button id="left" class="btn">←</button>
+                        <button id="up" class="btn">↑</button>
+                        <button id="right" class="btn">→</button>
+                        <button id="down" class="btn">↓</button>
+                    </div>
+                </td>
+            </tr>
+            </table>
+        </div>
+
+        <div class="line_set set">
+            <table>
+                <tr>
+                    <th><p>モード</p></th>
+                    <td>
+                        <label for="drawmode_normal">
+                            <input id="drawmode_normal" type="radio" name="drawmode" value="normal" data-mode="source-over" checked>
+                            ペン
+                        </label>
+                        <label for="drawmode_erase">
+                            <input id="drawmode_erase" type="radio" name="drawmode" value="erase" data-mode="destination-out">
+                            消しゴム
+                        </label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        <label for="l_bold">太さ(1-50)</label>
+                    </th>
+                    <td>
+                        <input id="l_bold" type="number" name="l_bold" min="1" max="50" step="1">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        <label for="l_color">色</label>
+                    </th>
+                    <td>
+                        <input id="l_color" type="color" name="l_color">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        <label for="l_opacity">透明度(0-1)</label>
+                    </th>
+                    <td>
+                        <input id="l_opacity" type="number" name="l_opacity" min="0" max="1" step="0.1">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="clear_set set">
+            <button id="clear_all" class="btn">全て</button>
+            <button id="clear_back" class="btn">背景色</button>
+            <button id="clear_img" class="btn">画像</button><br>
+            <button id="clear_font" class="btn">テキスト</button>
+            <button id="clear_line" class="btn">ライン</button>
+        </div>
+
+        <div class="download_set set">
+            <table>
+                <tr>
+                    <th><p>保存形式</p></th>
+                    <td>
+                        <label for="jpeg">
+                            <input type="radio" id="jpeg" name="extension" value="jpeg" checked>
+                            jpeg
+                        </label>
+                        <label for="png">
+                            <input type="radio" id="png" name="extension" value="png">
+                            png
+                        </label>
+                        <label for="webp">
+                            <input type="radio" id="webp" name="extension" value="webp">
+                            webp
+                        </label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        <label for="quality">画像品質</label>
+                    </th>
+                    <td>
+                        <input id="quality" type="number" min="0" max="100" step="1" value="90">
+                    </td>
+                </tr>
+            </table>
+            <button id="download_img" class="btn">ダウンロード</button>
+        </div>
+
     </aside>
+
     <script src="js/main.js"></script>
 </body>
 </html>

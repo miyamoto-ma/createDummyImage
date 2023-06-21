@@ -171,9 +171,9 @@
     // 中抜きにチェックが入ったら、f_stroke_wのinputを表示する(changeイベント)
     inputObj["f_style_l"].addEventListener('change', e => {
         if (e.target.checked) {
-            inputObj["f_stroke_w"].parentNode.classList.remove('hide');
+            inputObj["f_stroke_w"].parentNode.parentNode.classList.remove('hide');
         } else {
-            inputObj["f_stroke_w"].parentNode.classList.add('hide');
+            inputObj["f_stroke_w"].parentNode.parentNode.classList.add('hide');
         }
         changeStrokeCode(text_pos);
     });
@@ -471,10 +471,10 @@
     function setStrokeDefault() {
         if (fontDefault["style_l"]) {
             inputObj["f_style_l"].checked = true;
-            inputObj["f_stroke_w"].parentNode.classList.remove('hide');
+            inputObj["f_stroke_w"].parentNode.parentNode.classList.remove('hide');
         } else {
             inputObj["f_style_l"].checked = false;
-            inputObj["f_stroke_w"].parentNode.classList.add('hide');
+            inputObj["f_stroke_w"].parentNode.parentNode.classList.add('hide');
         }
     }
 
@@ -494,36 +494,56 @@
     // クリアボタン(各種)   fontのクリアボタンがまだ★★★
     clear_arr.forEach((clear, index) => {
         clear.addEventListener('click', () => {
+            let result;
             if (clear.id === 'clear_all') {
-                clearCanvasAll();
-                setDefaultSize();
-                setStrokeDefault();
-                setFontStyleDefault();
-                setLineDefaultMode();
-                setInputValue(canvasDefault, 'c_');
-                setInputValue(backDefault, 'c_');
-                setInputValue(lineDefault, 'l_');
-                setInputValue(fontDefault, 'f_');
-                setBgcolor();
+                result = confirm('全てレイヤーをリセットします。');
+                if (result) {
+                    clearCanvasAll();
+                    setDefaultSize();
+                    setStrokeDefault();
+                    setFontStyleDefault();
+                    setLineDefaultMode();
+                    setInputValue(canvasDefault, 'c_');
+                    setInputValue(backDefault, 'c_');
+                    setInputValue(lineDefault, 'l_');
+                    setInputValue(fontDefault, 'f_');
+                    setBgcolor();
+                }
             } else {
-                clearCanvas(ctx_arr[index]);
                 switch(clear.id){
                     case 'clear_line':
-                        setLineDefaultMode();
-                        setInputValue(lineDefault, 'l_');
+                        result = confirm('ラインをリセットします。');
+                        if (result) {
+                            clearCanvas(ctx_arr[index]);
+                            setLineDefaultMode();
+                            setInputValue(lineDefault, 'l_');
+                        }
                         break;
                     case 'clear_font':
-                        setStrokeDefault();
-                        setInputValue(fontDefault, 'f_');
-                        setFontStyleDefault();
+                        result = confirm('テキストをリセットします。');
+                        if (result) {
+                            clearCanvas(ctx_arr[index]);
+                            setStrokeDefault();
+                            setInputValue(fontDefault, 'f_');
+                            setFontStyleDefault();
+                        }
                         break;
                     case 'clear_back':
-                        setInputValue(backDefault, 'c_');
-                        setBgcolor();
+                        result = confirm('背景色をリセットします。');
+                        if (result) {
+                            clearCanvas(ctx_arr[index]);
+                            setInputValue(backDefault, 'c_');
+                            setBgcolor();
+                        }
                         break;
                     case 'clear_img':
-                        base_img.value = '';
-                        setBgcolor();
+                        result = confirm('背景画像をリセットします。');
+                        if (result) {
+                            clearCanvas(ctx_arr[index]);
+                            base_img.value = '';
+                            setBgcolor();
+                        }
+                        break;
                 }
             }
         });
@@ -549,4 +569,12 @@
             return parseInt(str, 16);
         });
     }
+
+    // hb_btnの開閉
+    const hb_btn = document.getElementById('hb_btn');
+    const control = document.getElementById('control');
+    hb_btn.addEventListener('click', () => {
+        hb_btn.classList.toggle('active');
+        control.classList.toggle('active');
+    })
 }

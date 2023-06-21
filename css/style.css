@@ -4,6 +4,10 @@
     display: none !important;
 }
 
+.mb_5 {
+    margin-bottom: 5px;
+}
+
 .title_wrap {
     margin-top: 50px;
     text-align: center;
@@ -11,7 +15,11 @@
 
 .title {
     display: inline-block;
+    padding: 0 0.5em;
     font-size: 35px;
+    color: #678e9d;
+    text-shadow: 1px 1px 2px #678e9da0;
+    letter-spacing: .1em;
     position:relative;
 }
 .title::before {
@@ -20,13 +28,15 @@
     width: 100%;
     height: 10px;
     border-radius: 5px;
-    background-color: skyblue;
+    background-color: #beeaf4;
     position:absolute;
+    left: 0;
     bottom: 0;
     opacity: .8;
     z-index: -1;
 }
 
+/* main */
 .main {
     display: block;
 }
@@ -57,21 +67,234 @@
     z-index: 1;
 }
 
+/* hb_btn (asideの開閉ボタン) */
+.hb_btn {
+    width: 2.5em;
+    height: 2.5em;
+    border: 1px solid #9fd8ef91;
+    border-radius: 50%;
+    background-color: #678e9d;
+    box-shadow: 0.5px 1px 0px 0px #678e9d85,
+                3px 5px 7px 2px #8bbdd129,
+                inset 0px -0.5px 1.5px 0px #678e9d85;
+    position: fixed;
+    top: 0.5em;
+    left: 0.5em;
+    z-index: 200;
+    transition: .3s all;
+}
+.hb_btn span {
+    width: 60%;
+    height: 3px;
+    border-radius: 1.5px;
+    background-color: #f4fbfd;
+    position: absolute;
+    left: 50%;
+    transition: 1s all;
+}
+.hb_btn span:first-child {
+    top: 29%;
+    transform: translate(-50%, -50%);
+}
+.hb_btn span:nth-child(2) {
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.hb_btn span:nth-child(3) {
+    top: 71%;
+    transform: translate(-50%, -50%);
+}
+.hb_btn.active span:first-child {
+    top: 50%;
+    transform: translate(-50%, 0) rotate(225deg);
+}
+.hb_btn.active span:nth-child(2) {
+    opacity: 0;
+    transform: translate(-50%, 0) rotate(135deg);
+}
+.hb_btn.active span:nth-child(3) {
+    top: 50%;
+    transform: translate(-50%, 0) rotate(315deg);
+}
+.hb_btn:hover,
+.hb_btn.active,
+.hb_btn.active:hover span {
+    background-color: #f4fbfd;
+}
+.hb_btn:hover span,
+.hb_btn.active span,
+.hb_btn.active:hover {
+    background-color: #678e9d;
+}
+.hb_btn:active {
+    opacity: .7;
+}
+
+
+
+/* aside */
 .control {
+    padding: 50px 0;
+    background-color: #beeaf454;
+    backdrop-filter: blur(2px);
     display: flex;
     flex-direction: column;
+    font-size: 14px;
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
     overflow-y: auto;
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: 1s all;
+}
+.control.active {
+    transform: translateX(0);
 }
 
-.control label{
+tr {
+    height: 2.5em;
+    vertical-align: middle;
+}
+
+th p {
+    margin: .5em;
+}
+
+.control label {
     display: block;
     margin: .5em;
 }
 
-.control input {
-    margin: .5em auto 0 1em;
+.control input:not([type="color"]):not([type="radio"]):not([type="file"]),
+.control select {
+    padding: 0.5em;
+    border-radius: 3px;
+    box-shadow: inset 1px 1px 4px #678e9d85;
+}
+
+.font_set > input[type="text"] {
+    width: 100%;
+}
+
+.font_set > label,
+.img_set > label {
+    display: inline-block;
+    font-weight: 700;
+}
+
+.img_set input[type="file"] {
+    width: 260px;
+}
+
+input[type="file"],
+input[type="color"] {
+    transition: .3s all;
+}
+input[type="file"]:hover,
+input[type="color"]:hover {
+    cursor: pointer;
+}
+.clear_set {
+    text-align: center;
+}
+
+.btn {
+    height: 1.8em;
+    line-height: 1.8em;
+    border: 1px solid #9fd8ef91;
+    border-radius: 3px;
+    background-color: #f4fbfd;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #678e9d;
+    box-shadow: 0.5px 1px 0px 0px #678e9d85,
+                3px 5px 7px 2px #8bbdd129,
+                inset 0px -0.5px 1.5px 0px #678e9d85;
+    transition: .3s all;
+}
+.btn:hover {
+    background-color: #678e9d;
+    color: #f4fbfd;
+}
+.btn:active {
+    opacity: .7;
+}
+
+.text_btns .btn {
+    width: 1.8em;
+}
+.img_set .btn,
+.download_set .btn,
+.clear_set .btn {
+    width: auto;
+    margin: .5em 0;
+    padding: 0 .5em;
+}
+.clear_set .btn {
+    margin: .5em .5em;
+}
+
+.set {
+    margin: 15px;
+    padding: 2em 1em 1em;
+    border: 1px solid #9fd8ef30;
+    border-radius: 5px;
+    background-color: #f4fbfd80;
+    box-shadow: 0.5px 1px 1px 1px #678e9d85,
+                3px 5px 7px 2px #8bbdd129,
+                inset 0.5px 1px 1px 1px #ffffff85;
+    position: relative;
+}
+
+.set::before {
+    content: '';
+    display: block;
+    padding: 6px 18px;
+    border: 1px solid #9fd8ef91;
+    border-radius: 16px;
+    background-color: #f4fbfd;
+    font-size: 16px;
+    font-weight: bold;
+    color: #678e9d;
+    box-shadow: 0.5px 1px 0px 0px #678e9d85,
+                3px 5px 7px 2px #8bbdd129,
+                inset 0px -0.5px 1.5px 0px #678e9d85;
+    position: absolute;
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.canvas_set::before {
+    content: 'キャンバス';
+}
+.font_set::before {
+    content: 'テキスト';
+}
+.line_set::before {
+    content: 'ライン';
+}
+.img_set::before {
+    content: '背景画像';
+}
+.download_set::before {
+    content: 'ダウンロード';
+}
+.clear_set::before {
+    content: 'クリア'
+}
+
+.control::-webkit-scrollbar {
+    width: 10px;
+}
+.control::-webkit-scrollbar-thumb {
+    border-radius: 2.5px;
+    background-color: #9fd8ef0a;
+    box-shadow: inset 0 0 3px #678e9d50;
+}
+.control::-webkit-scrollbar-track {
+    background-color: #9fd8ef20;
 }
