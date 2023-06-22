@@ -43,6 +43,7 @@
     let l_mode = "normal";          // 描画モード or 消しゴムモード
     // フォントのデフォルト値
     let fontDefault = {
+        select: "",                 // テキストを選択
         style_l: false,             // フォントスタイル(中抜きかどうか)
         style_i: false,             // フォントスタイル(斜体かどうか)
         style_b: false,             // フォントスタイル(太字かどうか)
@@ -51,6 +52,7 @@
         family: "ms_g",             // フォントの種類
         color: "#000000",           // フォントの色
         text: "",                   // 文章内容
+        position: [30, 80],           // ポジション(左上)
     }
     let fontFamily = {
         ms_g: 'ＭＳ ゴシック',
@@ -62,29 +64,120 @@
         hg_ge: 'HGゴシックE'
     }
 
-    let click_flag = "0";     // クリック判定(1:クリック開始, 2:クリック中)
-
     // 各input要素を取得
     const inputObj = {
-        c_width: document.getElementById('c_width'),        // キャンバスの幅の要素
-        c_height: document.getElementById('c_height'),      // キャンバスの高さの要素
-        c_bgcolor: document.getElementById('c_bgcolor'),    // キャンバスの背景色の要素
+        c_width: document.getElementById('c_width'),         // キャンバスの幅の要素
+        c_height: document.getElementById('c_height'),       // キャンバスの高さの要素
+        c_bgcolor: document.getElementById('c_bgcolor'),     // キャンバスの背景色の要素
         c_bgopacity: document.getElementById('c_bgopacity'), // キャンバスの背景色(透明度)
-        l_bold: document.getElementById('l_bold'),          // 線の太さ
-        l_color: document.getElementById('l_color'),        // 線の色
-        l_opacity: document.getElementById('l_opacity'),    // 線の色(透明度)
-        f_style_l: document.getElementById('f_style_l'),        // フォントスタイル(中抜きかどうか)
-        f_style_i: document.getElementById('f_style_i'),        // フォントスタイル(斜体かどうか)
-        f_style_b: document.getElementById('f_style_b'),        // フォントスタイル(太字かどうか)
-        f_stroke_w: document.getElementById('f_stroke_w'),      // 中抜きの場合の線の太さ
-        f_size: document.getElementById('f_size'),          // フォントサイズの要素
-        f_family: document.getElementById('f_family'),      // フォントの種類
-        f_color: document.getElementById('f_color'),        // フォント色の要素
-        f_text: document.getElementById('text'),            // 文章の要素
-        base_img: document.getElementById('base_img'),      // 画像を取得
+        l_bold: document.getElementById('l_bold'),           // 線の太さ
+        l_color: document.getElementById('l_color'),         // 線の色
+        l_opacity: document.getElementById('l_opacity'),     // 線の色(透明度)
+        f_select: document.getElementById('f_select'),       // テキストを選択
+        f_style_l: document.getElementById('f_style_l'),     // フォントスタイル(中抜きかどうか)
+        f_style_i: document.getElementById('f_style_i'),     // フォントスタイル(斜体かどうか)
+        f_style_b: document.getElementById('f_style_b'),     // フォントスタイル(太字かどうか)
+        f_stroke_w: document.getElementById('f_stroke_w'),   // 中抜きの場合の線の太さ
+        f_size: document.getElementById('f_size'),           // フォントサイズの要素
+        f_family: document.getElementById('f_family'),       // フォントの種類
+        f_color: document.getElementById('f_color'),         // フォント色の要素
+        f_text: document.getElementById('text'),             // 文章の要素
+        base_img: document.getElementById('base_img'),       // 画像を取得
+    }
+    // 登録したテキストのパラメータを保存しておくクラス
+    class TextSet {
+        constructor() {
+            this.num = 1;                            // テキストセットのキー番号(配列index + 1)
+            this.style_l = fontDefault["style_l"];   // フォントスタイル(中抜きかどうか)
+            this.style_i = fontDefault["style_i"];   // フォントスタイル(斜体かどうか)
+            this.style_b = fontDefault["style_b"];   // フォントスタイル(太字かどうか)
+            this.stroke_w = fontDefault["stroke_w"]; // 中抜きの場合の線の太さ
+            this.size = fontDefault["size"];         // フォントの大きさ
+            this.family = fontDefault["family"];     // フォントの種類
+            this.color = fontDefault["color"];       // フォントの色
+            this.text = fontDefault["text"];         // 文章内容
+            this.position = [...fontDefault["position"]]; // ポジション(左上)
+        }
+
+        // 斜体・太字をセット時に使用する文字列を作るメソッド
+        getFontStyle() {
+            let font_style = '';
+            if (this.style_i) {
+                font_style += 'italic ';
+            }
+            if (this.style_b) {
+                font_style += 'bold ';
+            }
+            return font_style;
+        }
+
+        // 中抜きのチェックの有無で、使用するコードを変更して描画するメソッド
+        writingText() {
+            ctx_font.font = this.getFontStyle() + this.size + 'px ' + fontFamily[this.family];
+            if (!this.style_l) {
+                ctx_font.fillStyle = this.color;
+                ctx_font.fillText(this.text, this.position[0], this.position[1]);
+            } else {
+                ctx_font.strokeStyle = this.color;
+                ctx_font.lineWidth = this.stroke_w;
+                ctx_font.strokeText(this.text, this.position[0], this.position[1]);
+            }
+        }
+
+        // 値をセット
+        setValueSet() {
+            this.setInputValue();
+            this.setSelected();
+            this.setChecked();
+        }
+
+        // input要素の値をセットするメソッド(valueにセットするもの)
+        setInputValue() {
+            let arr = ['stroke_w', 'size', 'color', 'text'];
+            arr.forEach(target => {
+                inputObj['f_' + target].value = this[target];
+            });
+        }
+        // selectの値をセットするメソッド(selectedをセットするもの。f_family用)
+        setSelected() {
+            Array.from(inputObj.f_family.children).forEach((option, idx) => {
+                if (option.value == this.family) {
+                    inputObj.f_family.children[idx].selected = true;
+                } else {
+                    inputObj.f_family.children[idx].selected = false;
+                }
+            });
+        }
+        // checkboxの値をセットするメソッド(checkedをセットするもの)
+        setChecked() {
+            let arr = ['style_l', 'style_i', 'style_b'];
+            arr.forEach(target => {
+                inputObj['f_' + target].checked = this[target];
+            });
+        }
+        // 「選択」に新しくoptionをセットするメソッド
+        setSelectOption() {
+            let option = document.createElement('option');
+            option.id = 'textset_' + this.num;
+            option.value = this.num;
+            option.selected = true;
+            option.textContent = this.num + ') ' + this.text;
+            inputObj['f_select'].appendChild(option);
+        }
+        // 「選択」からoptionを削除するメソッド
+        removeSelectOption() {
+            let target = document.getElementById('textset_' + this.num);
+            inputObj['f_select'].removeChild(target);
+        }
     }
 
+    // TextSetのインスタンスを格納する配列
+    let text_set_arr = [];
+    // 選択中のTextSetのidx
+    let current_idx = 0;
 
+    // クリック判定(1:クリック開始, 2:クリック中)
+    let click_flag = "0";
     // キャンバスのサイズをセット
     setDefaultSize();
 
@@ -92,7 +185,6 @@
     setInputDefault(canvasDefault, 'c_');
     setInputDefault(backDefault, 'c_');
     setInputDefault(lineDefault, 'l_');
-    setInputDefault(fontDefault, 'f_');
 
     // 背景色をセット
     setBgcolor();
@@ -105,9 +197,14 @@
     changeCanvasColor('bgcolor');
     changeCanvasColor('bgopacity');
 
+    // テキストの初期値をセット
+    createTextSet();
+
+    // テキスト関係の要素の初期化
+    text_set_arr[0].setValueSet();
+
     // デフォルトのラインモードに設定
     setLineDefaultMode();
-
 
     // ラインのモードを切り替える関数
     function changeLineMode() {
@@ -159,60 +256,56 @@
     let right = document.getElementById('right');
     let up = document.getElementById('up');
     let down = document.getElementById('down');
-    let text_pos_b = [30, 80];
-    let text_pos = [30, 80];
     let move_step = 10;
-    let font_style_arr = [];                         // italic, boldを入れる配列
-    let font_style;                                  // font_style_arrを文字列に直したもの
-    setFontStyleDefault();                           // font_styleに初期値をセット
-    setStrokeDefault();                              // 中抜きにチェックが入っていた場合の初期値セット
-    changeStrokeCode(text_pos_b);                    // 中抜きにチェックの有無で初期のテキストのコードを実行
+    setFontStyleDefault(text_set_arr[0]);             // font_styleに初期値をセット
+    setStrokeDefault(text_set_arr[0]);                // 中抜きにチェックが入っていた場合の初期値セット
+    text_set_arr[0].writingText();                    // 中抜きにチェックの有無で初期のテキストのコードを実行
+
+    // テキストを再描画する関数
+    function rewriteText() {
+        clearCanvas(ctx_font);
+        text_set_arr.forEach(set => {
+            set.writingText();
+        });
+    }
 
     // 中抜きにチェックが入ったら、f_stroke_wのinputを表示する(changeイベント)
     inputObj["f_style_l"].addEventListener('change', e => {
         if (e.target.checked) {
             inputObj["f_stroke_w"].parentNode.parentNode.classList.remove('hide');
+            text_set_arr[current_idx]["style_l"] = true;
         } else {
             inputObj["f_stroke_w"].parentNode.parentNode.classList.add('hide');
+            text_set_arr[current_idx]["style_l"] = false;
         }
-        changeStrokeCode(text_pos);
+        rewriteText();
     });
 
-    // 中抜きのチェックの有無で、使用するコードを返る関数
-    function changeStrokeCode(pos_arr) {
-        clearCanvas(ctx_font);
-        ctx_font.font = font_style + inputObj["f_size"].value + 'px ' + fontFamily[inputObj.f_family.value];
-        if (!inputObj["f_style_l"].checked) {
-            ctx_font.fillStyle = inputObj["f_color"].value;
-            ctx_font.fillText(inputObj["f_text"].value, pos_arr[0], pos_arr[1]);
-        } else {
-            ctx_font.strokeStyle = inputObj["f_color"].value;
-            ctx_font.lineWidth = inputObj["f_stroke_w"].value;
-            ctx_font.strokeText(inputObj["f_text"].value, pos_arr[0], pos_arr[1]);
-        }
-    }
-
     // 中抜きの線の太さを変更する
-    inputObj["f_stroke_w"].addEventListener('change', () => changeStrokeCode(text_pos));
+    inputObj["f_stroke_w"].addEventListener('change', e => {
+        text_set_arr[current_idx]["stroke_w"] = e.target.value;
+        rewriteText();
+    });
 
-    // 矢印クリックでテキストの移動
+    // 矢印クリックでテキストの移動★★★全部のpositionが変わってしまう。
     function text_move(target) {
         target.addEventListener('click', () => {
             clearCanvas(ctx_font);
+            let ins = text_set_arr[current_idx];
             switch (target.id) {
                 case 'left':
-                    text_pos[0] += move_step * -1;
+                    ins["position"][0] += move_step * -1;
                     break;
                 case 'right':
-                    text_pos[0] += move_step;
+                    ins["position"][0] += move_step;
                     break;
                 case 'up':
-                    text_pos[1] += move_step * -1;
+                    ins["position"][1] += move_step * -1;
                     break;
                 default:
-                    text_pos[1] += move_step;
+                    ins["position"][1] += move_step;
             }
-            changeStrokeCode(text_pos);
+            rewriteText();
         });
     }
     text_move(left);
@@ -221,33 +314,105 @@
     text_move(down);
 
     // 入力テキストを表示
-    inputObj["f_text"].addEventListener('keyup', () => changeStrokeCode(text_pos));
+    inputObj["f_text"].addEventListener('keyup', e => {
+        text_set_arr[current_idx]["text"] = e.target.value;
+        let text = (text_set_arr[current_idx]["num"] + ') ' + e.target.value).slice(0, 20);
+        inputObj["f_select"].children[current_idx].textContent = text;
+        rewriteText();
+    });
 
     // フォントサイズ/フォントの種類を変更する関数
     function changeFontSiFa(target) {
-        target.addEventListener('change', () => changeStrokeCode(text_pos));
+        target.addEventListener('change', e => {
+            let ins = text_set_arr[current_idx];
+            let key = target.id.slice(2);
+            ins[key] = e.target.value;
+            rewriteText();
+        });
     }
     changeFontSiFa(inputObj["f_size"]);
     changeFontSiFa(inputObj["f_family"]);
 
     // テキストの色の変更
-    inputObj["f_color"].addEventListener('change', () => changeStrokeCode(text_pos));
+    inputObj["f_color"].addEventListener('change', e => {
+        let key = e.target.id.slice(2);
+        text_set_arr[current_idx][key] = e.target.value;
+        rewriteText();
+    });
 
     // 斜体/太字に変更
     function chengeFontStyle(target) {
-        target.addEventListener('change', () => {
+        target.addEventListener('change', e => {
+            let ins = text_set_arr[current_idx];
+            let key = e.target.id.slice(2);
             if (target.checked) {
-                font_style_arr.push(target.dataset.style + ' ');
+                ins[key] = true;
             } else {
-                let index = font_style_arr.indexOf(target.dataset.style + ' ');
-                font_style_arr.splice(index, 1);
+                ins[key] = false;
             }
-            font_style = font_style_arr.join('');
-            changeStrokeCode(text_pos);
+            rewriteText();
         });
     }
     chengeFontStyle(f_style_i);
     chengeFontStyle(f_style_b);
+
+    // テキストセットの追加・削除ボタン
+    const text_add = document.getElementById('text_add');           //「追加」ボタン
+    const text_remove = document.getElementById('text_remove');     //「削除」ボタン
+
+    // 「追加」クリック時に新しいテキストセットを追加する
+    text_add.addEventListener('click', () => {
+        createTextSet();
+    });
+
+    // 新しいテキストセットを作成して、input要素に初期値をセットする関数(テキスト専用)
+    function createTextSet() {
+        let set = new TextSet();
+        text_set_arr.push(set);
+        let idx = text_set_arr.indexOf(set);
+        set.num = idx + 1;
+        current_idx = idx;
+        set.setSelectOption();
+        set.setValueSet();
+        setStrokeDefault(text_set_arr[current_idx]);
+    }
+
+    // 「削除」クリック時に選択中のテキストセットを削除する
+    text_remove.addEventListener('click', () => {
+        if (text_set_arr.length > 1) {
+            deleteTextSet(text_set_arr[current_idx]);
+        } else {
+            alert('すべてのテキストセットは削除できません。')
+        }
+    });
+
+    // テキストセットを1つ削除する関数（引数numはTextSetのnumプロパティ）
+    function deleteTextSet(ins) {
+        ins.removeSelectOption();
+        ins = null;
+        text_set_arr.splice(current_idx, 1);
+        // 1番目のテキストセットをselectedにする
+        inputObj["f_select"].children[0].selected = true;
+        // numをふり直す
+        text_set_arr.forEach((ins, idx) => {
+            let new_num = idx + 1;
+            text_set_arr[idx]["num"] = new_num;
+            inputObj["f_select"].children[idx].textContent = ins.num + ") " + ins.text;
+            inputObj["f_select"].children[idx].id = 'textset_' + ins.num;
+            inputObj["f_select"].children[idx].value = ins.num;
+        });
+        text_set_arr[0].setValueSet();
+        current_idx = 0;
+        rewriteText();
+        setStrokeDefault(text_set_arr[current_idx]);
+    }
+
+    // 「選択」変更時、該当のテキストセットをセットする
+    inputObj["f_select"].addEventListener('change', e => {
+        current_idx = e.currentTarget.value - 1;
+        text_set_arr[current_idx].setValueSet();
+        setStrokeDefault(text_set_arr[current_idx]);
+    });
 
 
 
@@ -432,44 +597,50 @@
     }
 
     // input要素に初期値をセットする関数
-    function setInputDefault(Obj, prefix) {
-        Object.entries(Obj).forEach(val => {
+    function setInputDefault(obj, prefix) {
+        Object.entries(obj).forEach(val => {
             inputObj[prefix + val[0]].defaultValue = val[1];
         });
     }
     // input要素を初期値に戻す関数
-    function setInputValue(Obj, prefix) {
-        Object.entries(Obj).forEach(val => {
+    function setInputValue(obj, prefix) {
+        Object.entries(obj).forEach(val => {
             inputObj[prefix + val[0]].value = val[1];
         });
     }
 
-    //
 
-    // フォントのスタイルを初期値にセットする関数
-    function setFontStyleDefault() {
-        if (fontDefault["style_i"]){
-            font_style_arr.push('italic ');
+    // 追加したテキストを全て削除して初期化
+    function clearTextSets() {
+        text_set_arr.forEach((val, idx) => {
+            text_set_arr[idx] = null;
+        });
+        text_set_arr = [];
+        while (inputObj["f_select"].firstChild) {
+            inputObj["f_select"].removeChild(inputObj["f_select"].firstChild);
+        }
+        createTextSet();
+        setFontStyleDefault(text_set_arr[0]);
+        setStrokeDefault(text_set_arr[0]);
+    }
+
+    // フォントのスタイルを初期値にセットする関数 ins(TextSetのインスタンス)
+    function setFontStyleDefault(ins) {
+        if (ins["style_i"]){
             inputObj["f_style_i"].checked = true;
         } else {
-            let index = font_style_arr.indexOf(inputObj["f_style_i"].dataset.style + ' ');
-            font_style_arr.splice(index, 1);
             inputObj["f_style_i"].checked = false;
         }
-        if (fontDefault["style_b"]) {
-            font_style_arr.push('bold ');
+        if (ins["style_b"]) {
             inputObj["f_style_b"].checked = true;
         } else {
-            let index = font_style_arr.indexOf(inputObj["f_style_b"].dataset.style + ' ');
-            font_style_arr.splice(index, 1);
             inputObj["f_style_b"].checked = false;
         }
-        font_style = font_style_arr.join('');
     }
 
     // 中抜きの初期処理
-    function setStrokeDefault() {
-        if (fontDefault["style_l"]) {
+    function setStrokeDefault(ins) {
+        if (ins["style_l"]) {
             inputObj["f_style_l"].checked = true;
             inputObj["f_stroke_w"].parentNode.parentNode.classList.remove('hide');
         } else {
@@ -477,8 +648,6 @@
             inputObj["f_stroke_w"].parentNode.parentNode.classList.add('hide');
         }
     }
-
-
 
     // ラインのモードをデフォルトに戻す関数
     function setLineDefaultMode() {
@@ -499,14 +668,13 @@
                 result = confirm('全てレイヤーをリセットします。');
                 if (result) {
                     clearCanvasAll();
+                    clearTextSets();
+
                     setDefaultSize();
-                    setStrokeDefault();
-                    setFontStyleDefault();
                     setLineDefaultMode();
                     setInputValue(canvasDefault, 'c_');
                     setInputValue(backDefault, 'c_');
                     setInputValue(lineDefault, 'l_');
-                    setInputValue(fontDefault, 'f_');
                     setBgcolor();
                 }
             } else {
@@ -523,9 +691,7 @@
                         result = confirm('テキストをリセットします。');
                         if (result) {
                             clearCanvas(ctx_arr[index]);
-                            setStrokeDefault();
-                            setInputValue(fontDefault, 'f_');
-                            setFontStyleDefault();
+                            clearTextSets();
                         }
                         break;
                     case 'clear_back':

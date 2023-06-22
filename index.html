@@ -72,6 +72,10 @@
         </div>
 
         <div class="font_set set">
+            <label for="f_select">選択</label>
+            <select name="f_select" id="f_select" class="f_select"></select><br>
+            <button id="text_add" class="text_add btn">追加</button>
+            <button id="text_remove" class="text_remove btn">削除</button><br>
             <label for="text">テキスト</label><br>
             <input id="text" class="mb_5" type="text" name="text">
             <table>
@@ -138,14 +142,14 @@
                 </td>
             </tr>
 
-            <tr>
+            <tr class="btns_tr">
                 <th><p>位置</p></th>
                 <td>
                     <div class="text_btns">
-                        <button id="left" class="btn">←</button>
-                        <button id="up" class="btn">↑</button>
-                        <button id="right" class="btn">→</button>
-                        <button id="down" class="btn">↓</button>
+                        <button id="left" class="btn left">←</button>
+                        <button id="up" class="btn up">↑</button>
+                        <button id="right" class="btn right">→</button>
+                        <button id="down" class="btn down">↓</button>
                     </div>
                 </td>
             </tr>

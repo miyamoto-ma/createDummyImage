@@ -173,6 +173,9 @@ th p {
     border-radius: 3px;
     box-shadow: inset 1px 1px 4px #678e9d85;
 }
+.control .f_select {
+    width: 80%;
+}
 
 .font_set > input[type="text"] {
     width: 100%;
@@ -223,12 +226,52 @@ input[type="color"]:hover {
     opacity: .7;
 }
 
+.btns_tr {
+    height: 100px;
+}
+.text_btns {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    box-shadow: 0.5px 1px 0px 0px #678e9d85,
+            3px 5px 7px 2px #8bbdd129,
+            inset 0px -0.5px 1.5px 0px #678e9d85;
+    position: relative;
+    top: 20px;
+}
 .text_btns .btn {
     width: 1.8em;
+    position: absolute;
+}
+.text_btns .up {
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50% 50% 3px 3px;
+}
+.text_btns .down {
+    bottom: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 3px 3px 50% 50%;
+}
+.text_btns .left {
+    left: -20%;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50% 3px 3px 50%;
+}
+.text_btns .right {
+    right: -20%;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 3px 50% 50% 3px;
 }
 .img_set .btn,
 .download_set .btn,
-.clear_set .btn {
+.clear_set .btn,
+.text_add,
+.text_remove {
     width: auto;
     margin: .5em 0;
     padding: 0 .5em;
