@@ -12,6 +12,7 @@
         <div class="title_wrap">
             <h1 class="title">ダミー画像作成ツール</h1>
         </div>
+        <!-- キャンバス群 -->
         <div class="canvas_wrap">
             <canvas id="canvas_line" class="canvas" width="500" height="500"></canvas>
             <canvas id="canvas_font" class="canvas" width="500" height="500"></canvas>
@@ -21,6 +22,7 @@
         <div id="result"></div>
     </main>
 
+    <!-- HBボタン -->
     <div id="hb_btn" class="hb_btn active">
         <span></span>
         <span></span>
@@ -28,49 +30,36 @@
     </div>
 
     <aside id="control" class="control active">
+        <!-- キャンバスサイズ・背景色 -->
         <div class="canvas_set set">
             <table>
                 <tr>
-                    <th>
-                        <label for="c_width">幅(10-800)</label>
-                    </th>
-                    <td>
-                        <input id="c_width" type="number" name="c_width" min="10" max="800" step="10">
-                    </td>
+                    <th><label for="c_width">幅(10-800)</label></th>
+                    <td><input id="c_width" type="number" name="c_width" min="10" max="800" step="10"></td>
                 </tr>
                 <tr>
-                    <th>
-                        <label for="c_height">高さ(10-800)</label>
-                    </th>
-                    <td>
-                        <input id="c_height" type="number" name="c_width" min="10" max="800" step="10">
-                    </td>
+                    <th><label for="c_height">高さ(10-800)</label></th>
+                    <td><input id="c_height" type="number" name="c_width" min="10" max="800" step="10"></td>
                 </tr>
                 <tr>
-                    <th>
-                        <label for="c_bgcolor">背景色</label>
-                    </th>
-                    <td>
-                        <input id="c_bgcolor" type="color" name="c_bgcolor">
-                    </td>
+                    <th><label for="c_bgcolor">背景色</label></th>
+                    <td><input id="c_bgcolor" type="color" name="c_bgcolor"></td>
                 </tr>
                 <tr>
-                    <th>
-                        <label for="c_bgopacity">透明度(0-1)</label>
-                    </th>
-                    <td>
-                        <input id="c_bgopacity" type="number" name="c_bgopacity" min="0" max="1" step="0.1">
-                    </td>
+                    <th><label for="c_bgopacity">透明度(0-1)</label></th>
+                    <td><input id="c_bgopacity" type="number" name="c_bgopacity" min="0" max="1" step="0.1"></td>
                 </tr>
                 </table>
         </div>
 
+        <!-- 背景画像 -->
         <div class="img_set set">
             <label for="base_img">画像を指定</label><br>
             <input id="base_img" type="file" name="base_img" accept=".jpg, .jpeg, .gif, .png, .webp"><br>
             <button id="sizebyimg_btn" class="btn">画像サイズに合わせる</button>
         </div>
 
+        <!-- テキスト -->
         <div class="font_set set">
             <label for="f_select">選択</label>
             <select name="f_select" id="f_select" class="f_select"></select><br>
@@ -80,9 +69,7 @@
             <input id="text" class="mb_5" type="text" name="text">
             <table>
                 <tr>
-                    <th>
-                        <label for="f_family">種類</label>
-                    </th>
+                    <th><label for="f_family">種類</label></th>
                     <td>
                         <select id="f_family" name="f_family">
                             <option value="ms_g" selected>MS ゴシック</option>
@@ -95,112 +82,77 @@
                         </select>
                     </td>
                 </tr>
+                <tr>
+                    <th><label for="f_size">サイズ(12-100)</label></th>
+                    <td><input id="f_size" type="number" name="f_size" min="12" max="100"></td>
+                </tr>
+                <tr>
+                    <th><label for="f_color">文字色</label></th>
+                    <td><input id="f_color" type="color" name="f_color"></td>
+                </tr>
+                <tr>
+                    <th><p>スタイル</p></th>
+                    <td>
+                        <label for="f_style_l">
+                            <input id="f_style_l" type="checkbox" name="f_style_l">中抜き
+                        </label>
+                        <label for="f_style_i">
+                            <input id="f_style_i" type="checkbox" name="f_style_i" data-style="italic">斜体
+                        </label>
+                        <label for="f_style_b">
+                            <input id="f_style_b" type="checkbox" name="f_style_b" data-style="bold">太字
+                        </label>
+                    </td>
+                </tr>
+                <tr class="hide">
+                    <th><label for="f_stroke_w">中抜き線幅(0-5)</label></th>
+                    <td><input id="f_stroke_w" type="number" name="f_stroke_w" min="0" max="5" step="0.2"></td>
+                </tr>
 
-
-
-            <tr>
-                <th>
-                    <label for="f_size">サイズ(12-100)</label>
-                </th>
-                <td>
-                    <input id="f_size" type="number" name="f_size" min="12" max="100">
-                </td>
-            </tr>
-
-            <tr>
-                <th>
-                    <label for="f_color">文字色</label>
-                </th>
-                <td>
-                    <input id="f_color" type="color" name="f_color">
-                </td>
-            </tr>
-
-            <tr>
-                <th><p>スタイル</p></th>
-                <td>
-                    <label for="f_style_l">
-                        <input id="f_style_l" type="checkbox" name="f_style_l">
-                        中抜き
-                    </label>
-                    <label for="f_style_i">
-                        <input id="f_style_i" type="checkbox" name="f_style_i" data-style="italic">
-                        斜体
-                    </label>
-                    <label for="f_style_b">
-                        <input id="f_style_b" type="checkbox" name="f_style_b" data-style="bold">
-                        太字
-                    </label>
-                </td>
-            </tr>
-            <tr class="hide">
-                <th>
-                    <label for="f_stroke_w">中抜き線幅(0-5)</label>
-                </th>
-                <td>
-                    <input id="f_stroke_w" type="number" name="f_stroke_w" min="0" max="5" step="0.2">
-                </td>
-            </tr>
-
-            <tr class="btns_tr">
-                <th><p>位置</p></th>
-                <td>
-                    <div class="text_btns">
-                        <button id="left" class="btn left">←</button>
-                        <button id="up" class="btn up">↑</button>
-                        <button id="right" class="btn right">→</button>
-                        <button id="down" class="btn down">↓</button>
-                    </div>
-                </td>
-            </tr>
+                <tr class="btns_tr">
+                    <th><p>位置</p></th>
+                    <td>
+                        <div class="text_btns">
+                            <button id="left" class="btn left">←</button>
+                            <button id="up" class="btn up">↑</button>
+                            <button id="right" class="btn right">→</button>
+                            <button id="down" class="btn down">↓</button>
+                        </div>
+                    </td>
+                </tr>
             </table>
         </div>
 
+        <!-- ライン -->
         <div class="line_set set">
             <table>
                 <tr>
                     <th><p>モード</p></th>
                     <td>
                         <label for="drawmode_normal">
-                            <input id="drawmode_normal" type="radio" name="drawmode" value="normal" data-mode="source-over" checked>
-                            ペン
+                            <input id="drawmode_normal" type="radio" name="drawmode" value="normal" data-mode="source-over" checked>ペン
                         </label>
                         <label for="drawmode_erase">
-                            <input id="drawmode_erase" type="radio" name="drawmode" value="erase" data-mode="destination-out">
-                            消しゴム
+                            <input id="drawmode_erase" type="radio" name="drawmode" value="erase" data-mode="destination-out">消しゴム
                         </label>
                     </td>
                 </tr>
-
                 <tr>
-                    <th>
-                        <label for="l_bold">太さ(1-50)</label>
-                    </th>
-                    <td>
-                        <input id="l_bold" type="number" name="l_bold" min="1" max="50" step="1">
-                    </td>
+                    <th><label for="l_bold">太さ(1-50)</label></th>
+                    <td><input id="l_bold" type="number" name="l_bold" min="1" max="50" step="1"></td>
                 </tr>
-
                 <tr>
-                    <th>
-                        <label for="l_color">色</label>
-                    </th>
-                    <td>
-                        <input id="l_color" type="color" name="l_color">
-                    </td>
+                    <th><label for="l_color">色</label></th>
+                    <td><input id="l_color" type="color" name="l_color"></td>
                 </tr>
-
                 <tr>
-                    <th>
-                        <label for="l_opacity">透明度(0-1)</label>
-                    </th>
-                    <td>
-                        <input id="l_opacity" type="number" name="l_opacity" min="0" max="1" step="0.1">
-                    </td>
+                    <th><label for="l_opacity">透明度(0-1)</label></th>
+                    <td><input id="l_opacity" type="number" name="l_opacity" min="0" max="1" step="0.1"></td>
                 </tr>
             </table>
         </div>
 
+        <!-- クリア -->
         <div class="clear_set set">
             <button id="clear_all" class="btn">全て</button>
             <button id="clear_back" class="btn">背景色</button>
@@ -209,40 +161,45 @@
             <button id="clear_line" class="btn">ライン</button>
         </div>
 
+        <!-- ダウンロード -->
         <div class="download_set set">
             <table>
                 <tr>
                     <th><p>保存形式</p></th>
                     <td>
                         <label for="jpeg">
-                            <input type="radio" id="jpeg" name="extension" value="jpeg" checked>
-                            jpeg
+                            <input type="radio" id="jpeg" name="extension" value="jpeg" checked>jpeg
                         </label>
                         <label for="png">
-                            <input type="radio" id="png" name="extension" value="png">
-                            png
+                            <input type="radio" id="png" name="extension" value="png">png
                         </label>
                         <label for="webp">
-                            <input type="radio" id="webp" name="extension" value="webp">
-                            webp
+                            <input type="radio" id="webp" name="extension" value="webp">webp
                         </label>
                     </td>
                 </tr>
-
                 <tr>
-                    <th>
-                        <label for="quality">画像品質</label>
-                    </th>
-                    <td>
-                        <input id="quality" type="number" min="0" max="100" step="1" value="90">
-                    </td>
+                    <th><label for="quality">画像品質</label></th>
+                    <td><input id="quality" type="number" min="0" max="100" step="1" value="90"></td>
                 </tr>
             </table>
             <button id="download_img" class="btn">ダウンロード</button>
         </div>
-
     </aside>
 
+    <script src="js/default_values.js"></script>
+    <script src="js/elements.js"></script>
+    <script src="js/textSet.class.js"></script>
+    <script src="js/functions.js"></script>
     <script src="js/main.js"></script>
+    <script>
+        // hb_btnの開閉
+        const hb_btn = document.getElementById('hb_btn');
+        const control = document.getElementById('control');
+        hb_btn.addEventListener('click', () => {
+            hb_btn.classList.toggle('active');
+            control.classList.toggle('active');
+        });
+    </script>
 </body>
 </html>

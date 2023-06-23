@@ -3,16 +3,15 @@
 .hide {
     display: none !important;
 }
-
 .mb_5 {
     margin-bottom: 5px;
 }
 
+/* タイトル */
 .title_wrap {
     margin-top: 50px;
     text-align: center;
 }
-
 .title {
     display: inline-block;
     padding: 0 0.5em;
@@ -40,13 +39,11 @@
 .main {
     display: block;
 }
-
 .canvas_wrap {
     position: relative;
     width: 100%;
     height: 100vh;
 }
-
 .canvas {
     position: absolute;
     top: 50%;
@@ -130,8 +127,6 @@
     opacity: .7;
 }
 
-
-
 /* aside */
 .control {
     padding: 50px 0;
@@ -152,21 +147,17 @@
 .control.active {
     transform: translateX(0);
 }
-
 tr {
     height: 2.5em;
     vertical-align: middle;
 }
-
 th p {
     margin: .5em;
 }
-
 .control label {
     display: block;
     margin: .5em;
 }
-
 .control input:not([type="color"]):not([type="radio"]):not([type="file"]),
 .control select {
     padding: 0.5em;
@@ -176,21 +167,17 @@ th p {
 .control .f_select {
     width: 80%;
 }
-
 .font_set > input[type="text"] {
     width: 100%;
 }
-
 .font_set > label,
 .img_set > label {
     display: inline-block;
     font-weight: 700;
 }
-
 .img_set input[type="file"] {
     width: 260px;
 }
-
 input[type="file"],
 input[type="color"] {
     transition: .3s all;
@@ -203,6 +190,7 @@ input[type="color"]:hover {
     text-align: center;
 }
 
+/* ボタン */
 .btn {
     height: 1.8em;
     line-height: 1.8em;
@@ -225,7 +213,6 @@ input[type="color"]:hover {
 .btn:active {
     opacity: .7;
 }
-
 .btns_tr {
     height: 100px;
 }
@@ -280,6 +267,7 @@ input[type="color"]:hover {
     margin: .5em .5em;
 }
 
+/* aside内の各コンテンツラップ */
 .set {
     margin: 15px;
     padding: 2em 1em 1em;
@@ -291,7 +279,6 @@ input[type="color"]:hover {
                 inset 0.5px 1px 1px 1px #ffffff85;
     position: relative;
 }
-
 .set::before {
     content: '';
     display: block;
@@ -310,7 +297,6 @@ input[type="color"]:hover {
     left: 50%;
     transform: translateX(-50%);
 }
-
 .canvas_set::before {
     content: 'キャンバス';
 }
@@ -330,6 +316,7 @@ input[type="color"]:hover {
     content: 'クリア'
 }
 
+/* asideのスクロールバー */
 .control::-webkit-scrollbar {
     width: 10px;
 }
